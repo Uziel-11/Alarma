@@ -1,0 +1,2 @@
+#!/bin/sh
+# Este archivo evita que Heroku ejecute automáticamente 'npm install' en el paso de compilación.
