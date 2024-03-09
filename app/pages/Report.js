@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import invokeBackend from "../utils/invokeBackend";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import {Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Table} from 'reactstrap';
+import {Modal, ModalBody, ModalFooter, ModalHeader, Table} from 'reactstrap';
 
 import Header from "../components/Header";
 
@@ -130,7 +130,7 @@ class Report extends Component {
                            <th className='text-center'>Telefono</th>
                            <th className='text-center'>Razon</th>
                            <th className='text-center'>Accion Tonada</th>
-                           {/*<th>Suspendido</th>*/}
+                           <th></th>
                        </tr>
                        </thead>
                        <tbody>
@@ -143,8 +143,8 @@ class Report extends Component {
                                    <td> {item.name} </td>
                                    <td> {item.nameGroup} </td>
                                    <td> {item.phone} </td>
-                                   <td> <button type='button' className='btn' onClick={()=>{this.getInformation(item); this.toggleModal('reason')}}> {item.reason.split(' ').slice(0, 5).join(' ')} </button> </td>
-                                   <td> <button type='button' className='btn' onClick={()=>{this.getInformation(item); this.toggleModal('actionTaken')}}> {item.actionTaken.split(' ').slice(0, 5).join(' ')} </button> </td>
+                                   <td> <button type='button' className='btn' onClick={()=>{this.getInformation(item); this.toggleModal('reason')}}> {!item.reason ? item.reason : item.reason.split(' ').slice(0, 5).join(' ')} </button> </td>
+                                   <td> <button type='button' className='btn' onClick={()=>{this.getInformation(item); this.toggleModal('actionTaken')}}> {!item.actionTaken ? item.actionTaken : item.actionTaken.split(' ').slice(0, 5).join(' ')} </button> </td>
                                    {/*<td>*/}
                                    {/*    <Form>*/}
                                    {/*        <FormGroup check>*/}

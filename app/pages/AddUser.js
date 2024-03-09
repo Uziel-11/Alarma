@@ -68,55 +68,69 @@ class AddUser extends React.Component{
             <>
                 <Header/>
 
-                <div className='col-md-9 mx-auto mt-4'>
+                <div className='container mt-5'>
+                    <div className='row justify-content-center'>
+                        <div className='col-md-6'>
                             <div className='card'>
                                 <div className='card-header text-center'> <h4> Agregar Usuario </h4> </div>
                                 <div className='card-body'>
-                                    <form className='row g-3'>
-                                        <div className='col-md-6'>
-                                            <label className='form-label'> Nombre Completo </label>
+                                    <form className='row justify-content-center'>
+                                        <div className='form-group'>
+                                            <label htmlFor='name' className='form-label'> Nombre Completo </label>
                                             <input type='text'
+                                                   id='name'
                                                    className='form-control'
                                                    name='name'
                                                    value={name}
                                                    onChange={this.handleChange.bind(this)}
-                                                   required/>
+                                                   required
+                                            />
                                         </div>
-                                        <div className='col-md-6'>
-                                            <label className='form-label'> Alias </label>
+                                        <br/>
+                                        <div className='form-group'>
+                                            <label className='form-label' htmlFor='alias'> Alias </label>
                                             <input type='text'
+                                                   id='alias'
                                                    className='form-control'
                                                    name='alias'
                                                    value={alias}
                                                    onChange={this.handleChange.bind(this)}
-                                                   required/>
+                                                   required
+                                            />
                                         </div>
-                                        <div className='col-md-6'>
-                                            <label className='form-label'> Telefono </label>
+                                        <br/>
+                                        <div className='form-group'>
+                                            <label className='form-label' htmlFor='phone'> Telefono </label>
                                             <input type='text'
+                                                   id='phone'
                                                    className='form-control'
                                                    name='phone'
                                                    value={phone}
                                                    onChange={this.handleChange.bind(this)}
-                                                   required/>
+                                                   required
+                                            />
                                         </div>
-                                        <div className='col-md-6'>
-                                            <label className='form-label'> Contraseña </label>
+                                        <div className='form-group'>
+                                            <label className='form-label' htmlFor='password'> Contraseña </label>
                                             <input type='text'
+                                                   id='password'
                                                    className='form-control'
                                                    name='password'
                                                    value={password}
                                                    onChange={this.handleChange.bind(this)}
-                                                   required/>
+                                                   required
+                                            />
+                                        </div>
+                                        <br/>
+                                        <div className="col-12 text-center">
+                                            <button className="btn btn-primary col-6 mx-auto" style={{margin:"4%",padding:"2%"}} onClick={()=>{this.sendData()}} type="submit">Agregar Usuario</button>
                                         </div>
                                     </form>
-                                    <div className="col-12 text-center">
-                                        <button className="btn btn-primary" onClick={()=>{this.sendData()}} type="submit">Agregar Usuario</button>
-                                    </div>
-                                    <br/>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
             </>
         );

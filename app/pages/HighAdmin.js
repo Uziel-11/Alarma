@@ -80,11 +80,36 @@ class HighAdmin extends React.Component {
     }
 
     sendAdmin(){
-        InvokeBackend.posInvocation(`/users/newAdmin`, this.state.persons, data => {
+        const {country, province, municipality, city, cologne, admin, phoneAdmin, emailAdmin, postalCode, password, superAdmin} = this.state
+        let roles = ''
+
+        //Comprobando si ya existe un SeperAdministrador
+        if (superAdmin !== 0){
+            roles = 'admin'
+        }else {
+            roles = 'superadmin'
+        }
+        if (!country || !province || !municipality || !city || !cologne || !admin || !phoneAdmin || !emailAdmin || !postalCode || !password){
+            return
+        }
+        const dataAdmin = [{country, province, municipality, city, cologne, admin, phoneAdmin, emailAdmin, postalCode, password, roles}]
+        InvokeBackend.posInvocation(`/users/newAdmin`, dataAdmin, data => {
             alert(data.message)
             this.props.history.push('/Login')
         }, err => {
             alert(err.message)
+        })
+        this.setState({
+            country: '',
+            province: '',
+            municipality: '',
+            city: '',
+            cologne: '',
+            admin: '',
+            phoneAdmin: '',
+            emailAdmin: '',
+            postalCode: '',
+            password: '',
         })
     }
 
@@ -126,81 +151,78 @@ class HighAdmin extends React.Component {
             <>
                 <Header/>
                 <div className='container'>
-                    {
-                        <div className='row'>
-                            <div className='col-md-12 mx-auto mt-4'>
-                                <div className='card'>
-                                    <div className="card-header text-center"> <h4> Alta Administrador </h4> </div>
-                                    <div className='card-body'>
-                                        <form className="row g-3" onSubmit={this.addAdmin.bind(this)}>
-                                            <div className="col-md-4">
-                                                <label htmlFor="validationDefault01" className="form-label">Pais</label>
-                                                <input type="text" className="form-control" id="validationDefault01" name='country'
-                                                       value={country} onChange={this.handleChange.bind(this)} required/>
-                                            </div>
-                                            <div className="col-md-4">
-                                                <label htmlFor="validationDefault02" className="form-label">Estado o Provincia</label>
-                                                <input type="text" className="form-control" id="validationDefault02" name='province'
-                                                       value={province} onChange={this.handleChange.bind(this)} required/>
-                                            </div>
-                                            <div className="col-md-4">
-                                                <label htmlFor="validationDefault03" className="form-label">Municipio</label>
-                                                <input type="text" className="form-control" id="validationDefault03" name='municipality'
-                                                       value={municipality} onChange={this.handleChange.bind(this)} required/>
-                                            </div>
-                                            <div className="col-md-4">
-                                                <label htmlFor="validationDefault04" className="form-label">Ciudad</label>
-                                                <input type="text" className="form-control" id="validationDefault04" name='city'
-                                                       value={city} onChange={this.handleChange.bind(this)} required/>
-                                            </div>
-                                            <div className="col-md-4">
-                                                <label htmlFor="validationDefault05" className="form-label">Colonia</label>
-                                                <input type="text" className="form-control" id="validationDefault05" name='cologne'
-                                                       value={cologne} onChange={this.handleChange.bind(this)} required/>
-                                            </div>
-                                            <div className="col-md-4">
-                                                <label htmlFor="validationDefault06" className="form-label">Codigo Postal</label>
-                                                <input type="text" className="form-control" id="validationDefault06" name='postalCode'
-                                                       value={postalCode} onChange={this.handleChange.bind(this)} required/>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <label htmlFor="validationDefault07" className="form-label">Nombre</label>
-                                                <input type="text" className="form-control" id="validationDefault07" name='admin'
-                                                       value={admin} onChange={this.handleChange.bind(this)} required/>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <label htmlFor="validationDefaultUsername"
-                                                       className="form-label">Correo</label>
-                                                <div className="input-group">
-                                                    <span className="input-group-text" id="inputGroupPrepend2">@</span>
-                                                    <input type="text" className="form-control" id="validationDefaultUsername" name='emailAdmin'
-                                                           aria-describedby="inputGroupPrepend2" value={emailAdmin} onChange={this.handleChange.bind(this)} required/>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <label htmlFor="validationDefault08" className="form-label">Telefono</label>
-                                                <input type="text" className="form-control" id="validationDefault08" name='phoneAdmin' value={phoneAdmin} onChange={this.handleChange.bind(this)} required/>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <label htmlFor="validationDefault08" className="form-label">Contraseña</label>
-                                                <input type="text" className="form-control" id="validationDefault08" name='password' value={password} onChange={this.handleChange.bind(this)} required/>
-                                            </div>
-                                            <div className="col-12 text-center">
-                                                <button className="btn btn-primary" onClick={()=>{this.addAdmin()}} type="submit">cargar</button>
-                                            </div>
-                                            <button className='btn btn-primary' onClick={()=>{this.sendAdmin()}}> enviar datos</button>
-                                        </form>
-                                        <br/>
 
-                                    </div>
+                    <div className='row'>
+                        <div className='col-md-12 mx-auto mt-4'>
+                            <div className='card'>
+                                <div className="card-header text-center"> <h4> Alta Administrador </h4> </div>
+                                <div className='card-body'>
+                                    <form className="row g-3">
+                                        <div className="col-md-4">
+                                            <label htmlFor="validationDefault01" className="form-label">Pais</label>
+                                            <input type="text" className="form-control" id="validationDefault01" name='country'
+                                                   value={country} onChange={this.handleChange.bind(this)} required/>
+                                        </div>
+                                        <div className="col-md-4">
+                                            <label htmlFor="validationDefault02" className="form-label">Estado o Provincia</label>
+                                            <input type="text" className="form-control" id="validationDefault02" name='province'
+                                                   value={province} onChange={this.handleChange.bind(this)} required/>
+                                        </div>
+                                        <div className="col-md-4">
+                                            <label htmlFor="validationDefault03" className="form-label">Municipio</label>
+                                            <input type="text" className="form-control" id="validationDefault03" name='municipality'
+                                                   value={municipality} onChange={this.handleChange.bind(this)} required/>
+                                        </div>
+                                        <div className="col-md-4">
+                                            <label htmlFor="validationDefault04" className="form-label">Ciudad</label>
+                                            <input type="text" className="form-control" id="validationDefault04" name='city'
+                                                   value={city} onChange={this.handleChange.bind(this)} required/>
+                                        </div>
+                                        <div className="col-md-4">
+                                            <label htmlFor="validationDefault05" className="form-label">Colonia</label>
+                                            <input type="text" className="form-control" id="validationDefault05" name='cologne'
+                                                   value={cologne} onChange={this.handleChange.bind(this)} required/>
+                                        </div>
+                                        <div className="col-md-4">
+                                            <label htmlFor="validationDefault06" className="form-label">Codigo Postal</label>
+                                            <input type="text" className="form-control" id="validationDefault06" name='postalCode'
+                                                   value={postalCode} onChange={this.handleChange.bind(this)} required/>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label htmlFor="validationDefault07" className="form-label">Nombre</label>
+                                            <input type="text" className="form-control" id="validationDefault07" name='admin'
+                                                   value={admin} onChange={this.handleChange.bind(this)} required/>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label htmlFor="validationDefaultUsername"
+                                                   className="form-label">Correo</label>
+                                            <div className="input-group">
+                                                <span className="input-group-text" id="inputGroupPrepend2">@</span>
+                                                <input type="text" className="form-control" id="validationDefaultUsername" name='emailAdmin'
+                                                       aria-describedby="inputGroupPrepend2" value={emailAdmin} onChange={this.handleChange.bind(this)} required/>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label htmlFor="validationDefault08" className="form-label">Telefono</label>
+                                            <input type="text" className="form-control" id="validationDefault08" name='phoneAdmin' value={phoneAdmin} onChange={this.handleChange.bind(this)} required/>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label htmlFor="validationDefault08" className="form-label">Contraseña</label>
+                                            <input type="text" className="form-control" id="validationDefault08" name='password' value={password} onChange={this.handleChange.bind(this)} required/>
+                                        </div>
+                                        <div className="col-12 text-center">
+                                            <button className='btn btn-primary' onClick={()=>{this.sendAdmin()}}> enviar datos</button>
+                                        </div>
+                                    </form>
+                                    <br/>
 
                                 </div>
 
                             </div>
 
                         </div>
-                    }
-                    <br/>
+
+                    </div>
 
                     {/*{*/}
                     {/*    persons.length > 0 &&*/}

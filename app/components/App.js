@@ -3,11 +3,9 @@ import {BrowserRouter, Switch,Route, Redirect} from "react-router-dom";
 
 import Home from "../pages/Home";
 import Login from "../pages/Login";
-import HighUsers from "../pages/highUsers";
 import AddGroup from "../pages/addGroup";
 import Map from "../pages/MapComponent"
 import Report from "../pages/Report";
-import {ProtectedRoute, ProtectedRouteAdmin, ValidateLogin} from "../utils/ProtectedRoute";
 import NotFound404 from "../pages/NotFound404";
 import HighAdmin from "../pages/HighAdmin";
 import InvokeBackend from "../utils/invokeBackend";
@@ -86,5 +84,53 @@ class App extends React.Component{
         )
     }
 }
+
+const ProtectedRoute = ({ component: Component, isAuthenticated, ...rest }) => {
+
+    return (
+        <Route
+            {...rest}
+            render={(props) => {
+                if (isAuthenticated) {
+                    return <Component {...props} />;
+                } else {
+                    return <Redirect to="/Login" />;
+                }
+            }}
+        />
+    );
+};
+
+const ProtectedRouteAdmin = ({ component: Component, isAuthenticated, ...rest }) => {
+
+    return (
+        <Route
+            {...rest}
+            render={(props) => {
+                if (isAuthenticated) {
+                    return <Component {...props} />;
+                } else {
+                    return <Redirect to="/Home" />;
+                }
+            }}
+        />
+    );
+};
+
+const ValidateLogin = ({component: Component,isAuthenticated, ...rest }) => {
+    return (
+        <Route
+            {...rest}
+            render={(props) => {
+                if (isAuthenticated) {
+                    return <Redirect to="/Home" />;
+                } else {
+                    return <Component {...props} />;
+                }
+            }}
+        />
+    );
+}
+
 
 export default App;

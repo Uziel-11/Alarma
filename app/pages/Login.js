@@ -55,7 +55,7 @@ class Login extends React.Component {
                                             onChange={this.handleInputChange.bind(this)}
                                         />
                                         <br/>
-                                        <div className='label-error' ref={self => this.label = self}/>                                    </div>
+                                        <div className='label-error' ref={self => this.label = self}/></div>
                                     <div className="form-group">
                                         <label htmlFor="password">Contraseña</label>
                                         <input
@@ -68,18 +68,11 @@ class Login extends React.Component {
                                         />
                                     </div>
                                     {this.state.username !== 'admin' &&
-                                        <button onClick={this.initSesion.bind(this)} type="submit" className="btn btn-primary col-6 mx-auto" style={{margin:"6%",padding:"2%"}}>
+                                            <button onClick={this.initSesion.bind(this)} type="submit" className="btn btn-primary col-6 mx-auto" style={{margin:"6%",padding:"2%"}}>
                                             Iniciar Sesion
                                         </button>
                                     }
                                 </form>
-                                {/*{this.state.username === 'admin' && this.state.password && (*/}
-                                {/*    <div className='text-center'>*/}
-                                {/*        <button onClick={this.highUser.bind(this)}   type="submit" className="btn btn-primary col-6 mx-auto" style={{margin:"6%",padding:"2%"}}>*/}
-                                {/*            Alta Usuario*/}
-                                {/*        </button>*/}
-                                {/*    </div>*/}
-                                {/*)}*/}
                                 <div className='text-center'>
                                     <button onClick={this.registerAsAdmin.bind(this)}   type="submit" className="btn btn-primary col-6 mx-auto" style={{margin:"6%",padding:"2%"}}>
                                         Registrate como Administrador

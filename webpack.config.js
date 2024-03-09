@@ -10,7 +10,6 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'public'),
         filename: 'bundle.js',
-        // publicPath: "/"
     },
     module: {
         rules: [
@@ -21,10 +20,10 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         presets: ["@babel/preset-react"],
-                        plugins: [
-                            // "jsx-control-statements",
-                            require.resolve('react-refresh/babel')
-                        ]
+                        // plugins: [
+                        //     //Comentar o eliminar cuando se ejecute en modo produccion
+                        //     require.resolve('react-refresh/babel')
+                        // ]
                     }
                 }
             },
@@ -55,16 +54,15 @@ module.exports = {
     },
 
     plugins:[
-        new HtmlWebPackPlugin({
-            template: "./index.html",
-            filename: "index.html"
-        }),
+        //Comentar o Eliminar cuando se ejecute en modo produccion
+        // new HtmlWebPackPlugin({
+        //     template: "./index.html",
+        //     filename: "index.html"
+        // }),
         new MiniCssExtractPlugin(),
-        new ReactRefreshWebpackPlugin()
+        //Comentar o eliminar cuando se ejecute en modo produccion
+        // new ReactRefreshWebpackPlugin()
     ],
-    // resolve: {
-    //     extensions: ['.js']
-    // },
     devServer: {
         historyApiFallback:true,
         compress: true,

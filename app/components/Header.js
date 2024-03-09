@@ -19,6 +19,8 @@ class Header extends React.Component {
 
                     </a>
 
+                    <button className='btn btn-secondary' onClick={()=>{this.signOff()}}> Cerrar Sesion</button>
+
                     <div>
                         <ul className="navbar-brand ">
                             <span className = "d-inline-block">
@@ -33,6 +35,12 @@ class Header extends React.Component {
             </nav>
 
         )
+    }
+
+
+    signOff(){
+        localStorage.clear()
+        window.location.reload()
     }
 }
 

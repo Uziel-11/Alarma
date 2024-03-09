@@ -1,12 +1,12 @@
 import React from "react";
 import Header from "../components/Header";
-import {Input, Table} from "reactstrap";
+import {Input, Modal, ModalBody, ModalFooter, ModalHeader, Table} from "reactstrap";
 import InvokeBackend from "../utils/invokeBackend";
 import ModalAddNewGroup from "../components/ModalAddNewGroup";
 import invokeBackend from "../utils/invokeBackend";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSave, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
-import data from "bootstrap/js/src/dom/data";
+
 
 class Requests extends React.Component{
     constructor(props) {
@@ -17,6 +17,11 @@ class Requests extends React.Component{
             selector: [],
             selectValue: '',
             idAdminGroup: '',
+            message: '',
+            sendMessage: false,
+            phone: '',
+            status: false,
+            messageStatus: false
         }
     }
 
@@ -60,8 +65,19 @@ class Requests extends React.Component{
         )
     }
 
+    toggleModalSendMessage(){
+        this.setState({
+            sendMessage: !this.state.sendMessage
+        })
+    }
+    toggleMessageStatusModal(){
+        this.setState({
+            messageStatus: !this.state.messageStatus
+        })
+    }
+
     render() {
-        const {data, selector} = this.state
+        const {data, selector, message, sendMessage, status, messageStatus} = this.state
         return(
             <div>
                 <Header/>
@@ -120,7 +136,16 @@ class Requests extends React.Component{
                                         <td>
                                             <button className='btn btn-primary' onClick={()=>{this.saveAdmin()}}> <FontAwesomeIcon icon={faSave}/> </button>
                                             {' '}
-                                            <button className='btn btn-danger'> <FontAwesomeIcon icon={faTrashAlt}/> </button>
+                                            <button className='btn btn-danger'
+                                                    onClick={()=>{
+                                                        this.setState({
+                                                            idAdminGroup: admin.idAdminGroup,
+                                                            phone: admin.phoneAdmin
+                                                        })
+                                                        this.toggleModalSendMessage()}}
+                                                    >
+                                                <FontAwesomeIcon icon={faTrashAlt}/>
+                                            </button>
                                         </td>
                                     </tr>
                                 ))
@@ -132,8 +157,57 @@ class Requests extends React.Component{
                 {
                     this.state.modal && <ModalAddNewGroup/>
                 }
+
+                <Modal isOpen={sendMessage}>
+                    <ModalHeader>
+                        Agrege un mensaje del porque no acepta la Solicitud
+                    </ModalHeader>
+                    <ModalBody>
+                        <div className="col-md-12">
+                            <label htmlFor="validationDefault01" className="form-label">Mensaje</label>
+                            <textarea className="form-control" id="validationDefault01" name='message'
+                                   value={message} onChange={this.handleChange.bind(this)} required/>
+                        </div>
+                    </ModalBody>
+                    <ModalFooter>
+                        <button className='btn btn-primary' onClick={()=>{message?(this.sendMessage(), this.toggleModalSendMessage()): null}}>Enviar Mensaje</button>
+                        <button className='btn btn-secondary' onClick={()=>{this.toggleModalSendMessage()}}>Cerrar</button>
+                    </ModalFooter>
+                </Modal>
+
+                <Modal isOpen={messageStatus}>
+                    <ModalHeader>
+                        {status?'Mensaje':'Mensaje de Error'}
+                    </ModalHeader>
+                    <ModalBody>
+                        {message}
+                    </ModalBody>
+                    <ModalFooter>
+                        <button className='btn btn-secondary' onClick={()=>{this.toggleMessageStatusModal()}}>Cerrar</button>
+                    </ModalFooter>
+                </Modal>
             </div>
         )
+    }
+
+    handleChange(e){
+        this.setState({[e.target.name]: e.target.value})
+    }
+
+    async sendMessage(){
+        const {message, idAdminGroup, phone} = this.state
+        console.log(message, idAdminGroup)
+
+        await invokeBackend.deleteInvocation(`/users/deleteAdmin/${idAdminGroup}/${message}/${phone}`, data => {
+            this.setState({
+                message: data.message,
+                status: data.status
+            })
+            this.getRequests()
+            this.toggleMessageStatusModal()
+        }, error =>{
+            console.log(error.message)
+        })
     }
 
     saveAdmin(){

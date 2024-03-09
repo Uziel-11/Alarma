@@ -3,7 +3,6 @@ import {Modal, ModalBody, ModalFooter, ModalHeader, Table} from "reactstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import InvokeBackend from "../utils/invokeBackend";
-import data from "bootstrap/js/src/dom/data";
 
 class ModalAddNewGroup extends React.Component{
 
@@ -86,6 +85,7 @@ class ModalAddNewGroup extends React.Component{
                                     placeholder='Nombre del Grupo'
                                     value={this.state.name}
                                     onChange={this.handleChange.bind(this)}
+                                    required
                                 />
                             </div>
                             <div className="mb-3">
@@ -97,6 +97,7 @@ class ModalAddNewGroup extends React.Component{
                                     placeholder='Telefono del Grupo'
                                     value={this.state.numAlarm}
                                     onChange={this.handleChange.bind(this)}
+                                    required
                                 />
                             </div>
                             <div className="mb-3">
@@ -108,6 +109,7 @@ class ModalAddNewGroup extends React.Component{
                                     placeholder='39221'
                                     value={this.state.postalCode}
                                     onChange={this.handleChange.bind(this)}
+                                    required
                                 />
                             </div>
                         </form>

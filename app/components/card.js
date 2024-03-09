@@ -2,11 +2,11 @@ import React from "react";
 import "../assets/stylesheets/cardHome.css";
 import alarma from "../assets/img/alarma.png";
 import activate from "../assets/img/activate.png";
-import bd from "../utils/invokeBackend";
 import {decryptData} from "../utils/encriptData";
 import Socket from "./Socket";
 import {secretKey} from "../../configServer";
 import InvokeBackend from "../utils/invokeBackend";
+import {Modal, ModalBody, ModalHeader} from "reactstrap";
 
 class card extends React.Component{
 
@@ -17,7 +17,9 @@ class card extends React.Component{
             location: null,
             error: null,
             dateTimeCurrent: new Date(),
-            dataUser: []
+            dataUser: [],
+            modalMessage: false,
+            messageModal: '',
         }
     }
     async componentDidMount() {
@@ -40,7 +42,7 @@ class card extends React.Component{
         }
 
         this.intervalID = setInterval(
-            () => this.updatedatetime(),
+            () => this.updateDateTime(),
             1000
         )
 
@@ -48,7 +50,6 @@ class card extends React.Component{
             // console.log("Cliente Conectado ", Socket.id)
         })
 
-        console.log('Datos de Usuario: ', this.state.dataUser)
     }
 
     componentWillUnmount() {
@@ -64,13 +65,12 @@ class card extends React.Component{
             this.setState({
                 dataUser: data.data
             })
-            console.log(data.message)
         }, err => {
             alert(err.message)
         })
     }
 
-    updatedatetime(){
+    updateDateTime(){
         this.setState({
             dateTimeCurrent: new Date()
         })
@@ -106,30 +106,27 @@ class card extends React.Component{
         })
     }
 
-
-
     async activeAlarm(){
-        const {dateTimecurrent} = this.state;
-        const dateFormatted = this.formatDate(dateTimecurrent);
-        const hourFormatted =  this.formatHour(dateTimecurrent)
-        const name = this.state.dataUser.name
-        const phone = this.state.dataUser.phone
-        const idGroup = this.state.dataUser.nameGroup
+        const {name, phone, nameGroup, idGroup} = this.state.dataUser
+        const {dateTimeCurrent} = this.state;
+        const dateFormatted = this.formatDate(dateTimeCurrent);
+        const hourFormatted =  this.formatHour(dateTimeCurrent)
 
         let information = {
             name: name,
-            idGroup: idGroup,
+            nameGroup: nameGroup,
             phone:phone ,
+            idGroup: idGroup,
             dateActivate: dateFormatted,
             hourActivate: hourFormatted,
         }
-        // console.log(localStorage.getItem("idGroup"))
-        // console.log(information)
 
-        bd.activeAlarm(`/alarm/activate`, information, data => {
-            // console.log(data.group[0])
-            this.sendCoordinate(dateFormatted, hourFormatted, name, data.group[0])
-            alert(data.message)
+        InvokeBackend.activeAlarm(`/alarm/activate`, information, data => {
+            this.sendCoordinate(dateFormatted, hourFormatted, name, data.group)
+            this.setState({
+                messageModal: data.message
+            })
+            this.toggleModalMessage()
         },
             error => {
             alert(error.message)
@@ -138,35 +135,58 @@ class card extends React.Component{
 
     deactivateAlarm(){
         let information = {
-            idGroup: localStorage.getItem("idGroup"),
+            idGroup: this.state.dataUser.idGroup,
         }
-        bd.activeAlarm(`/alarm/deactivate`, information, data => {
+        InvokeBackend.activeAlarm(`/alarm/deactivate`, information, data => {
             console.log(data)
-            alert(data.message)
+            this.setState({
+                messageModal: data.message
+            })
+            this.toggleModalMessage()
         },
             error => {
             alert(error.message)
             })
     }
 
+    toggleModalMessage(){
+        this.setState({
+            modalMessage: !this.state.modalMessage
+        })
+    }
+
     render() {
+        const {modalMessage, messageModal} = this.state
         return(
 
-            <div className="row justify-content-center" style={{marginTop:"100px",margin:"4%",padding:"12%",background:"#0076F4"}}>
+            <div>
+                <div className="row justify-content-center" style={{marginTop:"100px",margin:"4%",padding:"12%",background:"#0076F4"}}>
 
-                <div className="container  d-flex justify-content-center" >
-                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-                        <button onClick={this.activeAlarm.bind(this)} className="btn btn-light" type="button" style={{ backgroundColor: "#FFFFFF", borderRadius: "30px", margin: '40px' }}>
-                            <img src={activate} width="120" height="120" alt="Activate" />
-                        </button>
-                        <button onClick={this.deactivateAlarm.bind(this)} className="btn btn-danger" type="button" style={{ backgroundColor: "#E04F5F", borderRadius: "30px", margin: '40px' }}>
-                            <img src={alarma} width="120" height="120" alt="Alarm" />
-                        </button>
+                    <div className="container  d-flex justify-content-center" >
+                        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+                            <button onClick={this.activeAlarm.bind(this)} className="btn btn-light" type="button" style={{ backgroundColor: "#FFFFFF", borderRadius: "30px", margin: '40px' }}>
+                                <img src={activate} width="120" height="120" alt="Activate" />
+                            </button>
+                            <button onClick={this.deactivateAlarm.bind(this)} className="btn btn-danger" type="button" style={{ backgroundColor: "#E04F5F", borderRadius: "30px", margin: '40px' }}>
+                                <img src={alarma} width="120" height="120" alt="Alarm" />
+                            </button>
+                        </div>
                     </div>
-
+                    {/*<button className='btn btn-secondary' onClick={()=>{console.log(this.state.dataUser)}}>datos de Usuario</button>*/}
                 </div>
-            </div>
 
+                <Modal isOpen={modalMessage}>
+                    <ModalHeader>
+                        Mensaje
+                    </ModalHeader>
+                    <ModalBody>
+                        {messageModal}
+                    </ModalBody>
+                    <ModalBody>
+                        <button className='btn btn-secondary' onClick={()=>{this.toggleModalMessage()}}>Cerrar</button>
+                    </ModalBody>
+                </Modal>
+            </div>
 
         )
     }
