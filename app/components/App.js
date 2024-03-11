@@ -34,6 +34,7 @@ class App extends React.Component{
             const token = {
                 token: await decryptData(localStorage.getItem('token').split(',').map(Number), secretKey, localStorage.getItem('ivT').split(',').map(Number))
             }
+
             await InvokeBackend.posInvocation(`/token/validateToken`, token, data => {
                 this.setState({
                     isAuthenticated: data.isAuthenticated,

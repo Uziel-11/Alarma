@@ -47,7 +47,7 @@ class card extends React.Component{
         )
 
         Socket.on('connect', () => {
-            // console.log("Cliente Conectado ", Socket.id)
+            console.log("Cliente Conectado ", Socket.id)
         })
 
     }

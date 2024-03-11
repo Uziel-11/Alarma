@@ -106,6 +106,10 @@ class Login extends React.Component {
             password: this.state.password
         }
 
+        if (this.state.username.trim() === '' && this.state.password.trim() === ''){
+            return
+        }
+
         bd.posInvocation(`/users/login`, user, async data =>{
             const tokenEncrypt = await encryptData(data.token, secretKey)
             localStorage.setItem('token', tokenEncrypt.encryptedData)
@@ -114,6 +118,10 @@ class Login extends React.Component {
         },
             error => {
             alert(error.message)
+                this.setState({
+                    username: '',
+                    password: ''
+                })
         })
     }
 

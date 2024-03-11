@@ -13,6 +13,7 @@ class AddUser extends React.Component{
             name: '',
             alias: '',
             idAdmin: '',
+            idGroup: ''
         }
     }
 
@@ -27,7 +28,8 @@ class AddUser extends React.Component{
             }
             await InvokeBackend.posInvocation(`/token/getIdAdmin`, token, data => {
                 this.setState({
-                    idAdmin: data.idAdmin
+                    idAdmin: data.idAdmin,
+                    idGroup: data.idGroup
                 })
             }, error => {
                 alert(error.message)
@@ -43,7 +45,7 @@ class AddUser extends React.Component{
     }
 
     sendData(){
-        const {password, phone, name, alias, idAdmin} = this.state
+        const {password, phone, name, alias, idAdmin, idGroup} = this.state
         if (!password || !phone || !name || !alias){
             return
         }
@@ -52,7 +54,8 @@ class AddUser extends React.Component{
             alias: alias,
             phone: phone,
             password: password,
-            idAdmin: idAdmin
+            idAdmin: idAdmin,
+            idGroup: idGroup
         }
         InvokeBackend.posInvocation(`/users/newUser`, user, data => {
             alert(data.message)
@@ -74,7 +77,7 @@ class AddUser extends React.Component{
                             <div className='card'>
                                 <div className='card-header text-center'> <h4> Agregar Usuario </h4> </div>
                                 <div className='card-body'>
-                                    <form className='row justify-content-center'>
+                                    <form className='row justify-content-center' onSubmit={this.handleChange.bind(this)}>
                                         <div className='form-group'>
                                             <label htmlFor='name' className='form-label'> Nombre Completo </label>
                                             <input type='text'

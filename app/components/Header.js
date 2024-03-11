@@ -1,10 +1,51 @@
 import React from "react";
 import location from "../assets/img/ubicacion.png";
 import escudo from "../assets/img/proteger.png";
+import {NavLink} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
+import {decryptData} from "../utils/encriptData";
+import {secretKey} from "../../configServer";
+import InvokeBackend from "../utils/invokeBackend";
 var texto = "Colonia";
 var texto2 = "Segura";
 
 class Header extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            isAdmin: false,
+            isSuperAdmin: false
+        }
+    }
+
+    async componentDidMount() {
+        await this.getData()
+    }
+
+    async getData (){
+        try {
+            const token = {
+                token: await decryptData(localStorage.getItem('token').split(',').map(Number), secretKey, localStorage.getItem('ivT').split(',').map(Number))
+            }
+
+            await InvokeBackend.posInvocation(`/token/validateToken`, token, data => {
+                this.setState({
+                    isAdmin: data.isAdmin,
+                    isSuperAdmin: data.isSuperAdmin
+                })
+            }, error => {
+                alert(error.message)
+                localStorage.clear()
+                window.location.reload()
+            })
+        } catch (error) {
+            console.error('Error al verificar autenticación:', error);
+            this.setState({ isAuthenticated: false, loading: false });
+        }
+    }
+
     render() {
         return(
             <nav className="navbar navbar-expand-lg navbar-light bg-light sticky-top bg-body-tertiary">
@@ -19,7 +60,43 @@ class Header extends React.Component {
 
                     </a>
 
-                    <button className='btn btn-secondary' onClick={()=>{this.signOff()}}> Cerrar Sesion</button>
+                    <div className="collapse navbar-collapse justify-content-end m-lg-auto" id="navbarNav" style={{marginRight:"7%"}}>
+                        <ul className="navbar-nav" >
+                            {
+                                (this.state.isAdmin || this.state.isSuperAdmin) &&
+                                <React.Fragment>
+                                    <li className="nav-item">
+                                        <NavLink  activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black", textDecoration: 'none'}} to="/Home">INICIO</NavLink>
+                                    </li>
+                                    <li className="nav-item" >
+
+                                        <NavLink activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black", textDecoration: 'none'}} to="/Reporte">REPORTE</NavLink>
+                                    </li>
+                                    <li className="nav-item" >
+
+                                        <NavLink activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black",textDecoration: 'none'}} to="/Alta">ALTA</NavLink>
+                                    </li>
+                                </React.Fragment>
+                            }
+                            {
+                                (this.state.isSuperAdmin && this.state.isAdmin) &&
+                                <React.Fragment>
+                                    <li className="nav-item">
+
+                                        <NavLink activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black",textDecoration: 'none'}} to="/Solicitudes">SOLICITUDES</NavLink>
+                                    </li>
+                                    <li className="nav-item" >
+                                        <NavLink activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black", textDecoration: 'none'}} to="/Administradores">ADMINISTRADORES</NavLink>
+                                    </li>
+                                    <li className="nav-item" >
+
+                                        <NavLink activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black", textDecoration: 'none'}} to="/Mapa">MAPA</NavLink>
+                                    </li>
+                                </React.Fragment>
+                            }
+                        </ul>
+                        <button className='btn' style={{marginLeft:"15px",color:"red",fontWeight:'bold',textDecoration: 'none'}} onClick={()=>{this.signOff()}}><FontAwesomeIcon icon={faSignOutAlt} spin/> CERRAR SESION</button>
+                    </div>
 
                     <div>
                         <ul className="navbar-brand ">
