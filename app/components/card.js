@@ -34,11 +34,11 @@ class card extends React.Component{
                     this.setState({ location: { latitude, longitude } });
                 },
                 (error) => {
-                    alert.error("Error obteniendo la ubicación:", error);
+                    alert("Error obteniendo la ubicación:"+ error);
                 }
             );
         } else {
-            alert.error("La geolocalización no está soportada por este navegador.");
+            alert("La geolocalización no está soportada por este navegador.");
         }
 
         this.intervalID = setInterval(
