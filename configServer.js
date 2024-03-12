@@ -2,7 +2,7 @@ module.exports = {
     debugmode : false,
 
     api: {
-        host: 'http://54.161.207.61'
+        host: 'http://52.91.230.135'
     },
 
 
