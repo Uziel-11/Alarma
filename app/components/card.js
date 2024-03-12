@@ -47,7 +47,7 @@ class card extends React.Component{
         )
 
         Socket.on('connect', () => {
-            console.log("Cliente Conectado ", Socket.id)
+            // console.log("Cliente Conectado ", Socket.id)
         })
 
     }
@@ -59,7 +59,8 @@ class card extends React.Component{
 
     async getDataUser(){
         const token = {
-            token: await decryptData(localStorage.getItem('token').split(',').map(Number), secretKey, localStorage.getItem('ivT').split(',').map(Number))
+            // token: await decryptData(localStorage.getItem('token').split(',').map(Number), secretKey, localStorage.getItem('ivT').split(',').map(Number))
+            token: localStorage.getItem('token')
         }
         await InvokeBackend.posInvocation(`/token/getDataUser`, token, data => {
             this.setState({

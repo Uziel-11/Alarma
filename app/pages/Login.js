@@ -111,9 +111,9 @@ class Login extends React.Component {
         }
 
         bd.posInvocation(`/users/login`, user, async data =>{
-            const tokenEncrypt = await encryptData(data.token, secretKey)
-            localStorage.setItem('token', tokenEncrypt.encryptedData)
-            localStorage.setItem('ivT', tokenEncrypt.iv)
+            // const tokenEncrypt = await encryptData(data.token, secretKey)
+            localStorage.setItem('token', data.token)
+            // localStorage.setItem('ivT', tokenEncrypt.iv)
             window.location.reload()
         },
             error => {

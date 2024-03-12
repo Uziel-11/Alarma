@@ -6,7 +6,7 @@ module.exports = {
     },
 
     socket: {
-        host: 'ws://52.91.230.135'
+        host: 'ws://52.91.230.135:3000'
     },
 
 

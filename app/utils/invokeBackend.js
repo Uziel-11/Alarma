@@ -51,7 +51,7 @@ class invokeBackEnd {
             .then(response => {
                 // console.log("Respuesta: " + JSON.stringify(response))
                 if (debug){
-                    console.log("Respuesta de la Solicitud: " + response)
+                    // console.log("Respuesta de la Solicitud: " + response)
                 }
 
                 return response.json()

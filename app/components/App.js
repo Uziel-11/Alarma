@@ -32,20 +32,29 @@ class App extends React.Component{
     async isAuthorised (){
         try {
             const token = {
-                token: await decryptData(localStorage.getItem('token').split(',').map(Number), secretKey, localStorage.getItem('ivT').split(',').map(Number))
+                // token: await decryptData(localStorage.getItem('token').split(',').map(Number), secretKey, localStorage.getItem('ivT').split(',').map(Number))
+                token: localStorage.getItem('token')
             }
 
-            await InvokeBackend.posInvocation(`/token/validateToken`, token, data => {
+
+            if (token.token){
+                await InvokeBackend.posInvocation(`/token/validateToken`, token, data => {
+                    this.setState({
+                        isAuthenticated: data.isAuthenticated,
+                        loading: data.loading,
+                        isAdmin: data.isAdmin,
+                        isSuperAdmin: data.isSuperAdmin                })
+                }, error => {
+                    alert(error.message)
+                    localStorage.clear()
+                    window.location.reload()
+                })
+            }else {
                 this.setState({
-                    isAuthenticated: data.isAuthenticated,
-                    loading: data.loading,
-                    isAdmin: data.isAdmin,
-                    isSuperAdmin: data.isSuperAdmin                })
-            }, error => {
-                alert(error.message)
-                localStorage.clear()
-                window.location.reload()
-            })
+                    isAuthenticated: false,
+                    loading: false
+                })
+            }
         } catch (error) {
             console.error('Error al verificar autenticación:', error);
             this.setState({ isAuthenticated: false, loading: false });

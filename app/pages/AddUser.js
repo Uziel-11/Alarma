@@ -24,7 +24,8 @@ class AddUser extends React.Component{
     async getIdAdmin(){
         try {
             const token = {
-                token: await decryptData(localStorage.getItem('token').split(',').map(Number), secretKey, localStorage.getItem('ivT').split(',').map(Number))
+                // token: await decryptData(localStorage.getItem('token').split(',').map(Number), secretKey, localStorage.getItem('ivT').split(',').map(Number))
+                token: localStorage.getItem('token')
             }
             await InvokeBackend.posInvocation(`/token/getIdAdmin`, token, data => {
                 this.setState({
