@@ -1,8 +1,12 @@
 module.exports = {
-    debugmode : false,
+    debugmode : true,
 
     api: {
         host: 'http://52.91.230.135'
+    },
+
+    socket: {
+        host: 'ws://52.91.230.135'
     },
 
 
