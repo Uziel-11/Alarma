@@ -34,7 +34,7 @@ class card extends React.Component{
                     this.setState({ location: { latitude, longitude } });
                 },
                 (error) => {
-                    alert(`Error obteniendo la ubicación: ${error}`);
+                    alert("Error obteniendo la ubicación: "+ JSON.stringify(error));
                 }
             );
         } else {
