@@ -15,6 +15,7 @@ import Requests from "../pages/Requests";
 import Groups from "../pages/Groups";
 import Admins from "../pages/Admins";
 import AddUser from "../pages/AddUser";
+import Users from "../pages/Users";
 
 class App extends React.Component{
 
@@ -79,12 +80,12 @@ class App extends React.Component{
                        <ValidateLogin exact path='/Login' component={Login} isAuthenticated={isAuthenticated}/>
                        <ProtectedRoute exact path='/Home' component={Home} isAuthenticated={isAuthenticated}/>
                        <ProtectedRouteAdmin exact path="/Alta" component={AddUser} isAuthenticated={isAdmin}/>
-                       <ProtectedRouteAdmin exact path="/Grupo" component={AddGroup} isAuthenticated={isSuperAdmin}/>
                        <ProtectedRouteAdmin exact path='/Mapa' component={Map} isAuthenticated={isSuperAdmin}/>
                        <ProtectedRouteAdmin exact path='/Reporte' component={Report} isAuthenticated={isAdmin}/>
                        <ProtectedRouteAdmin exact path='/Solicitudes' component={Requests} isAuthenticated={isSuperAdmin}/>
                        <ProtectedRouteAdmin exact path='/Grupos' component={Groups} isAuthenticated={isSuperAdmin}/>
                        <ProtectedRouteAdmin exact path='/Administradores' component={Admins} isAuthenticated={isSuperAdmin}/>
+                       <ProtectedRouteAdmin exact path='/Usuarios' component={Users} isAuthenticated={isSuperAdmin}/>
                        <Route exact path='/altaAdministrador' component={HighAdmin}/>
                        <Route component={NotFound404}/>
                    </Switch>

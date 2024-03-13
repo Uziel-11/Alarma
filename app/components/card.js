@@ -28,15 +28,15 @@ class card extends React.Component{
         // Verificar si el navegador soporta la geolocalización
         if (navigator.geolocation) {
             // Obtener la ubicación actual
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { latitude, longitude } = position.coords;
-                    this.setState({ location: { latitude, longitude } });
-                },
-                (error) => {
-                    alert("Error obteniendo la ubicación: "+ error.message);
-                }
-            );
+            // navigator.geolocation.getCurrentPosition(
+            //     (position) => {
+            //         const { latitude, longitude } = position.coords;
+            //         this.setState({ location: { latitude, longitude } });
+            //     },
+            //     (error) => {
+            //         alert("Error obteniendo la ubicación: "+ error.message);
+            //     }
+            // );
         } else {
             alert("La geolocalización no está soportada por este navegador.");
         }
@@ -52,6 +52,19 @@ class card extends React.Component{
 
     }
 
+    getubication(){
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                this.setState({ location: { latitude, longitude } });
+                console.log(this.state.location)
+            },
+            (error) => {
+                alert("Error obteniendo la ubicación: "+ error.message);
+            }
+        );
+
+    }
     componentWillUnmount() {
         //Limpiar el intervalo cuando el componente se desmonta
         clearInterval(this.intervalID)
@@ -175,6 +188,8 @@ class card extends React.Component{
                     </div>
                     {/*<button className='btn btn-secondary' onClick={()=>{console.log(this.state.dataUser)}}>datos de Usuario</button>*/}
                 </div>
+
+                <button className='btn btn-primary' onClick={()=>{this.getubication()}}>obtener ubicacion</button>
 
                 <Modal isOpen={modalMessage}>
                     <ModalHeader>

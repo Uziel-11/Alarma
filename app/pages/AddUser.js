@@ -1,8 +1,6 @@
 import React from "react";
 import Header from "../components/Header";
 import InvokeBackend from "../utils/invokeBackend";
-import {decryptData} from "../utils/encriptData";
-import {secretKey} from "../../configServer";
 
 class AddUser extends React.Component{
     constructor(props) {
@@ -13,12 +11,15 @@ class AddUser extends React.Component{
             name: '',
             alias: '',
             idAdmin: '',
-            idGroup: ''
+            idGroup: '',
+            role: '',
+            admins: [],
         }
     }
 
     async componentDidMount() {
         await this.getIdAdmin()
+        await this.getAdmins()
     }
 
     async getIdAdmin(){
@@ -30,8 +31,10 @@ class AddUser extends React.Component{
             await InvokeBackend.posInvocation(`/token/getIdAdmin`, token, data => {
                 this.setState({
                     idAdmin: data.idAdmin,
-                    idGroup: data.idGroup
+                    idGroup: data.idGroup,
+                    role: data.roles
                 })
+                localStorage.setItem('idAdmin', data.idAdmin)
             }, error => {
                 alert(error.message)
             })
@@ -41,9 +44,29 @@ class AddUser extends React.Component{
         }
     }
 
+    async getAdmins(){
+        await InvokeBackend.getInvocation('/users/getAdmins', data => {
+            this.setState({
+                admins: data.data
+            })
+        }, err => {
+            console.log(err.message)
+        })
+    }
+
     handleChange(e){
         this.setState({[e.target.name]: e.target.value})
     }
+
+    handleSelectChange = (event) => {
+        const idAdmin = event.target.value;
+        const idGroup = event.target.options[event.target.selectedIndex].getAttribute('idgroup');
+
+        this.setState({
+            idAdmin: idAdmin,
+            idGroup: idGroup
+        })
+    };
 
     sendData(){
         const {password, phone, name, alias, idAdmin, idGroup} = this.state
@@ -66,7 +89,7 @@ class AddUser extends React.Component{
     }
 
     render() {
-        const {password, phone, name, alias} = this.state
+        const {password, phone, name, alias, selectedValueGroup, idAdmin, admins, role} = this.state
 
         return (
             <>
@@ -125,6 +148,25 @@ class AddUser extends React.Component{
                                                    required
                                             />
                                         </div>
+                                        <br/>
+                                        {
+                                            role === 'superadmin' &&
+                                            <div className='form-group'>
+                                                <label className='form-label' htmlFor='select'></label>
+                                                <select
+                                                    className="form-select"
+                                                    value={selectedValueGroup}
+                                                    onChange={(event) => this.handleSelectChange(event)}
+                                                >
+                                                    <option value={idAdmin}>Seleccione un Administrador</option>
+                                                    {admins.map((admin) => (
+                                                        <option key={admin.idAdminGroup} value={admin.idAdminGroup} idgroup={admin.idGroup}>
+                                                            {admin.admin}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        }
                                         <br/>
                                         <div className="col-12 text-center">
                                             <button className="btn btn-primary col-6 mx-auto" style={{margin:"4%",padding:"2%"}} onClick={()=>{this.sendData()}} type="submit">Agregar Usuario</button>

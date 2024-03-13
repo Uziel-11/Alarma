@@ -4,11 +4,9 @@ import escudo from "../assets/img/proteger.png";
 import {NavLink} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
-import {decryptData} from "../utils/encriptData";
-import {secretKey} from "../../configServer";
 import InvokeBackend from "../utils/invokeBackend";
-var texto = "Colonia";
-var texto2 = "Segura";
+var texto = "Red";
+var texto2 = "Vigia";
 
 class Header extends React.Component {
 
@@ -16,7 +14,8 @@ class Header extends React.Component {
         super(props);
         this.state = {
             isAdmin: false,
-            isSuperAdmin: false
+            isSuperAdmin: false,
+            isAuthenticated: false,
         }
     }
 
@@ -31,16 +30,19 @@ class Header extends React.Component {
                 token: localStorage.getItem('token')
             }
 
-            await InvokeBackend.posInvocation(`/token/validateToken`, token, data => {
-                this.setState({
-                    isAdmin: data.isAdmin,
-                    isSuperAdmin: data.isSuperAdmin
+            if(token.token){
+                await InvokeBackend.posInvocation(`/token/validateToken`, token, data => {
+                    this.setState({
+                        isAuthenticated: data.isAuthenticated,
+                        isAdmin: data.isAdmin,
+                        isSuperAdmin: data.isSuperAdmin
+                    })
+                }, error => {
+                    alert(error.message)
+                    localStorage.clear()
+                    window.location.reload()
                 })
-            }, error => {
-                alert(error.message)
-                localStorage.clear()
-                window.location.reload()
-            })
+            }
         } catch (error) {
             console.error('Error al verificar autenticación:', error);
             this.setState({ isAuthenticated: false, loading: false });
@@ -48,6 +50,7 @@ class Header extends React.Component {
     }
 
     render() {
+        const {isAdmin, isSuperAdmin, isAuthenticated} = this.state
         return(
             <nav className="navbar navbar-expand-lg navbar-light bg-light sticky-top bg-body-tertiary">
                 <div className="container-fluid">
@@ -64,7 +67,7 @@ class Header extends React.Component {
                     <div className="collapse navbar-collapse justify-content-end m-lg-auto" id="navbarNav" style={{marginRight:"7%"}}>
                         <ul className="navbar-nav" >
                             {
-                                (this.state.isAdmin || this.state.isSuperAdmin) &&
+                                (isAdmin || isSuperAdmin) &&
                                 <React.Fragment>
                                     <li className="nav-item">
                                         <NavLink  activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black", textDecoration: 'none'}} to="/Home">INICIO</NavLink>
@@ -77,10 +80,14 @@ class Header extends React.Component {
 
                                         <NavLink activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black",textDecoration: 'none'}} to="/Alta">ALTA</NavLink>
                                     </li>
+                                    <li className="nav-item" >
+
+                                        <NavLink activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black", textDecoration: 'none'}} to="/Usuarios">USUARIOS</NavLink>
+                                    </li>
                                 </React.Fragment>
                             }
                             {
-                                (this.state.isSuperAdmin && this.state.isAdmin) &&
+                                (isSuperAdmin && isAdmin) &&
                                 <React.Fragment>
                                     <li className="nav-item">
 
@@ -93,10 +100,17 @@ class Header extends React.Component {
 
                                         <NavLink activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black", textDecoration: 'none'}} to="/Mapa">MAPA</NavLink>
                                     </li>
+                                    <li className="nav-item" >
+
+                                        <NavLink activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black", textDecoration: 'none'}} to="/Grupos">GRUPOS</NavLink>
+                                    </li>
                                 </React.Fragment>
                             }
                         </ul>
-                        <button className='btn' style={{marginLeft:"15px",color:"red",fontWeight:'bold',textDecoration: 'none'}} onClick={()=>{this.signOff()}}><FontAwesomeIcon icon={faSignOutAlt} spin/> CERRAR SESION</button>
+                        {
+                            isAuthenticated &&
+                            <button className='btn' style={{marginLeft:"15px",color:"red",fontWeight:'bold',textDecoration: 'none'}} onClick={()=>{this.signOff()}}><FontAwesomeIcon icon={faSignOutAlt} spin/> CERRAR SESION</button>
+                        }
                     </div>
 
                     <div>
