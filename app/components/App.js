@@ -85,7 +85,7 @@ class App extends React.Component{
                        <ProtectedRouteAdmin exact path='/Solicitudes' component={Requests} isAuthenticated={isSuperAdmin}/>
                        <ProtectedRouteAdmin exact path='/Grupos' component={Groups} isAuthenticated={isSuperAdmin}/>
                        <ProtectedRouteAdmin exact path='/Administradores' component={Admins} isAuthenticated={isSuperAdmin}/>
-                       <ProtectedRouteAdmin exact path='/Usuarios' component={Users} isAuthenticated={isSuperAdmin}/>
+                       <ProtectedRouteAdmin exact path='/Usuarios' component={Users} isAuthenticated={isAdmin}/>
                        <Route exact path='/altaAdministrador' component={HighAdmin}/>
                        <Route component={NotFound404}/>
                    </Switch>
