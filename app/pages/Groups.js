@@ -71,10 +71,10 @@ class Groups extends React.Component{
         const {idAlarm} = this.state
         invokeBackend.deleteInvocation(`/group/deleteAlarm/${idAlarm}`, data => {
             alert(data.message)
+            this.getGroups()
         }, err => {
             alert(err.message)
         })
-        this.getGroups()
     }
 
     deleteGroup(){
