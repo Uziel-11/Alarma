@@ -73,6 +73,8 @@ class Admins extends React.Component{
             <div>
                 <Header/>
                 <div className='container-fluid'>
+                    <h4 className='text-center'> Administradores </h4>
+                    <br/>
                     <Table striped>
                         <thead>
                             <tr>

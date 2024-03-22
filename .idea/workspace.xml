@@ -49,7 +49,7 @@
       <recent name="C:\Users\Uziel\Documents\Proyecto Col. Segura\Alarma\app\assets\stylesheets" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.build">
+  <component name="RunManager" selected="npm.dev">
     <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -82,8 +82,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.build" />
         <item itemvalue="npm.dev" />
+        <item itemvalue="npm.build" />
         <item itemvalue="npm.start" />
       </list>
     </recent_temporary>
@@ -109,7 +109,11 @@
       <workItem from="1710033459618" duration="1985000" />
       <workItem from="1710105842288" duration="14267000" />
       <workItem from="1710207819076" duration="10613000" />
-      <workItem from="1710296213256" duration="15084000" />
+      <workItem from="1710296213256" duration="15330000" />
+      <workItem from="1710686279120" duration="12716000" />
+      <workItem from="1710777343330" duration="20825000" />
+      <workItem from="1710907045172" duration="5843000" />
+      <workItem from="1710982277017" duration="11626000" />
     </task>
     <servers />
   </component>

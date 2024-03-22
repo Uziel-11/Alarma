@@ -28,15 +28,15 @@ class card extends React.Component{
         // Verificar si el navegador soporta la geolocalización
         if (navigator.geolocation) {
             // Obtener la ubicación actual
-            // navigator.geolocation.getCurrentPosition(
-            //     (position) => {
-            //         const { latitude, longitude } = position.coords;
-            //         this.setState({ location: { latitude, longitude } });
-            //     },
-            //     (error) => {
-            //         alert("Error obteniendo la ubicación: "+ error.message);
-            //     }
-            // );
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    this.setState({ location: { latitude, longitude } });
+                },
+                (error) => {
+                    alert("Error obteniendo la ubicación: "+ error.message);
+                }
+            );
         } else {
             alert("La geolocalización no está soportada por este navegador.");
         }
@@ -121,7 +121,7 @@ class card extends React.Component{
     }
 
     async activeAlarm(){
-        const {name, phone, nameGroup, idGroup} = this.state.dataUser
+        const {name, phone, nameGroup, id} = this.state.dataUser
         const {dateTimeCurrent} = this.state;
         const dateFormatted = this.formatDate(dateTimeCurrent);
         const hourFormatted =  this.formatHour(dateTimeCurrent)
@@ -130,10 +130,12 @@ class card extends React.Component{
             name: name,
             nameGroup: nameGroup,
             phone:phone ,
-            idGroup: idGroup,
+            idGroup: id,
             dateActivate: dateFormatted,
             hourActivate: hourFormatted,
         }
+
+        console.log(information)
 
         InvokeBackend.activeAlarm(`/alarm/activate`, information, data => {
             this.sendCoordinate(dateFormatted, hourFormatted, name, data.group)
@@ -189,7 +191,7 @@ class card extends React.Component{
                     {/*<button className='btn btn-secondary' onClick={()=>{console.log(this.state.dataUser)}}>datos de Usuario</button>*/}
                 </div>
 
-                <button className='btn btn-primary' onClick={()=>{this.getubication()}}>obtener ubicacion</button>
+                {/*<button className='btn btn-primary' onClick={()=>{this.getubication()}}>obtener ubicacion</button>*/}
 
                 <Modal isOpen={modalMessage}>
                     <ModalHeader>

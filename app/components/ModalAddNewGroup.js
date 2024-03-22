@@ -1,8 +1,9 @@
 import React from "react";
-import {Modal, ModalBody, ModalFooter, ModalHeader, Table} from "reactstrap";
+import {Input, Modal, ModalBody, ModalFooter, ModalHeader, Table} from "reactstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import InvokeBackend from "../utils/invokeBackend";
+import invokeBackend from "../utils/invokeBackend";
 
 class ModalAddNewGroup extends React.Component{
 
@@ -14,14 +15,27 @@ class ModalAddNewGroup extends React.Component{
             groups: false,
             name: '',
             numAlarm: '',
-            postalCode: ''
+            postalCode: '',
+            selectValue: '',
+            selector: []
         };
     }
 
     componentDidMount() {
+        this.loadAdmins()
         InvokeBackend.getInvocation(`/group/getGroups`, data => {
             this.setState({
                 data: data.data
+            })
+        }, err => {
+            alert(err.message)
+        })
+    }
+
+    loadAdmins(){
+        invokeBackend.getInvocation('/users/getAdmins', data => {
+            this.setState({
+                selector: data.data
             })
         }, err => {
             alert(err.message)
@@ -36,38 +50,44 @@ class ModalAddNewGroup extends React.Component{
             [fieldName]: value
         });
     }
+
     handleSubmit() {
 
-        if (this.state.name !== '' && this.state.numAlarm !== ''){
+        if (this.state.name !== '' && this.state.numAlarm !== '' && this.state.selectValue !== ''){
 
             let group = {
                 nameGroup: this.state.name,
                 numAlarm: this.state.numAlarm,
-                postalCode: this.state.postalCode
+                idAdminGroup: this.state.selectValue
             }
 
             InvokeBackend.posInvocation(`/group/addGroup`, group, data => {
-                    console.log(data)
                     alert(data.message)
-                    console.log(this.state.name, this.state.numAlarm);
 
                     this.setState({
                         name: '',
-                        numAlarm: ''
+                        numAlarm: '',
+                        selectValue: ''
                     });
                 },
                 err => {
-                    console.log(err.message)
+                    alert(err.message)
                 }
             )
         }else {
             alert('Llene todos los Campos')
-            console.log('Llene todos los campos')
         }
     }
 
+    changeBackdrop = ( event) => {
+        let {value} = event.target
+        this.setState({
+            selectValue: value,
+        })
+    };
+
     render() {
-        const {data, newGroup, groups} = this.state
+        const {data, newGroup, groups, selector} = this.state
         return(
             <div>
                 <Modal isOpen={this.state.newGroup}>
@@ -100,26 +120,40 @@ class ModalAddNewGroup extends React.Component{
                                     required
                                 />
                             </div>
-                            <div className="mb-3">
-                                <input
-                                    type='text'
-                                    id='postalCode'
-                                    name='postalCode'
-                                    className="form-control"
-                                    placeholder='39221'
-                                    value={this.state.postalCode}
-                                    onChange={this.handleChange.bind(this)}
-                                    required
-                                />
+                            {/*<div className="mb-3">*/}
+                            {/*    <input*/}
+                            {/*        type='text'*/}
+                            {/*        id='postalCode'*/}
+                            {/*        name='postalCode'*/}
+                            {/*        className="form-control"*/}
+                            {/*        placeholder='39221'*/}
+                            {/*        value={this.state.postalCode}*/}
+                            {/*        onChange={this.handleChange.bind(this)}*/}
+                            {/*        required*/}
+                            {/*    />*/}
+                            {/*</div>*/}
+                            <div className='mb-3'>
+                                <Input
+                                    type="select"
+                                    name="backdrop"
+                                    id="backdrop"
+                                    onChange={() => { this.changeBackdrop( event) }}
+                                >
+                                    <option value="">Seleccionar Adminstrador</option>
+                                    {
+                                        selector.map((admin) => (
+                                            <option key={admin.idAdminGroup} value={admin.idAdminGroup}>
+                                                {admin.admin}
+                                            </option>
+                                        ))
+                                    }
+                                </Input>
                             </div>
                         </form>
                     </ModalBody>
                     <ModalFooter>
                         <div className="text-center">
-                            <button type='submit' className="btn btn-primary" onClick={()=>{this.setState({groups:!groups})}}>Ver Grupos</button>
-                        </div>
-                        <div className="text-center">
-                            <button type='submit' className="btn btn-primary" onClick={()=>{this.handleSubmit()}}>Agregar Grupo</button>
+                            <button type='submit' className="btn btn-primary" onClick={()=>{this.handleSubmit(); window.location.reload()}}>Agregar Grupo</button>
                         </div>
                         <div className="text-center">
                             <button onClick={()=>{this.setState({newGroup: !newGroup}); window.location.reload()}} className="btn btn-primary">Cerrar</button>

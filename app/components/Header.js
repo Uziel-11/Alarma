@@ -109,7 +109,7 @@ class Header extends React.Component {
                         </ul>
                         {
                             isAuthenticated &&
-                            <button className='btn' style={{marginLeft:"15px",color:"red",fontWeight:'bold',textDecoration: 'none'}} onClick={()=>{this.signOff()}}><FontAwesomeIcon icon={faSignOutAlt} spin/> CERRAR SESION</button>
+                            <button className='btn' style={{marginLeft:"15px",color:"red",fontWeight:'bold',textDecoration: 'none'}} onClick={()=>{this.signOff()}}><FontAwesomeIcon icon={faSignOutAlt}/> CERRAR SESION</button>
                         }
                     </div>
 

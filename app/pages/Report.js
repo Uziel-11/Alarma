@@ -128,8 +128,8 @@ class Report extends Component {
                            <th className='text-center'>Activo</th>
                            <th className='text-center'>Grupo</th>
                            <th className='text-center'>Telefono</th>
-                           <th className='text-center'>Razon</th>
-                           <th className='text-center'>Accion Tonada</th>
+                           <th className='text-center'>Motivo</th>
+                           <th className='text-center'>Accion Tomada</th>
                            <th></th>
                        </tr>
                        </thead>
@@ -175,21 +175,21 @@ class Report extends Component {
                            <label htmlFor="idReport">ID</label>
                            <input className="form-control" type="text" name="idReport" id="idReport" disabled readOnly value={form?form.idReport: this.state.data.length+1}/>
                            <br />
-                           <label htmlFor="time">Hora</label>
-                           <input className="form-control" type="text" name="time" id="time" disabled value={form?form.time: ''}/>
-                           <br />
-                           <label htmlFor="date">Fecha</label>
-                           <input className="form-control" type="text" name="date" id="date" disabled value={form?form.date: ''}/>
-                           <br />
-                           <label htmlFor="name">Activo</label>
+                           {/*<label htmlFor="time">Hora</label>*/}
+                           {/*<input className="form-control" type="text" name="time" id="time" disabled value={form?form.time: ''}/>*/}
+                           {/*<br />*/}
+                           {/*<label htmlFor="date">Fecha</label>*/}
+                           {/*<input className="form-control" type="text" name="date" id="date" disabled value={form?form.date: ''}/>*/}
+                           {/*<br />*/}
+                           {/*<label htmlFor="name">Activo</label>*/}
                            <input className="form-control" type="text" name="name" id="name" disabled value={form?form.name:''}/>
                            <br />
-                           <label htmlFor="nameGroup">Grupo</label>
-                           <input className="form-control" type="text" name="nameGroup" id="nameGroup" disabled value={form?form.nameGroup:''}/>
-                           <br />
-                           <label htmlFor="phone">Telefono</label>
-                           <input className="form-control" type="text" name="phone" id="phone" disabled value={form?form.phone:''}/>
-                           <br />
+                           {/*<label htmlFor="nameGroup">Grupo</label>*/}
+                           {/*<input className="form-control" type="text" name="nameGroup" id="nameGroup" disabled value={form?form.nameGroup:''}/>*/}
+                           {/*<br />*/}
+                           {/*<label htmlFor="phone">Telefono</label>*/}
+                           {/*<input className="form-control" type="text" name="phone" id="phone" disabled value={form?form.phone:''}/>*/}
+                           {/*<br />*/}
                            <label htmlFor="reason">Razon</label>
                            <textarea className="form-control" type="text" name="reason" id="reason" onChange={this.handleChange} value={form?form.reason:''}/>
                            <br />

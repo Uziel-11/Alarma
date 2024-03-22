@@ -64,7 +64,6 @@ class Requests extends React.Component{
             }
         )
     }
-
     toggleModalSendMessage(){
         this.setState({
             sendMessage: !this.state.sendMessage
@@ -98,7 +97,7 @@ class Requests extends React.Component{
                                 <th className='text-center'>Telefono</th>
                                 <th className='text-center'>Correo</th>
                                 <th className='text-center'>C.P.</th>
-                                <th className='text-center'>Asignar Grupo</th>
+                                {/*<th className='text-center'>Asignar Grupo</th>*/}
                                 <th></th>
                             </tr>
                         </thead>
@@ -116,25 +115,25 @@ class Requests extends React.Component{
                                         <td>{admin.phoneAdmin}</td>
                                         <td>{admin.emailAdmin}</td>
                                         <td>{admin.postalCode}</td>
+                                        {/*<td>*/}
+                                        {/*    <Input*/}
+                                        {/*        type="select"*/}
+                                        {/*        name="backdrop"*/}
+                                        {/*        id="backdrop"*/}
+                                        {/*        onChange={()=>{this.changeBackdrop(admin.idAdminGroup, event)}}*/}
+                                        {/*    >*/}
+                                        {/*        <option value="">Seleccionar Grupo</option>*/}
+                                        {/*        {*/}
+                                        {/*            selector.map((group)=> (*/}
+                                        {/*                <option key={group.idGroup} value={group.idGroup}>*/}
+                                        {/*                    {group.nameGroup}*/}
+                                        {/*                </option>*/}
+                                        {/*            ))*/}
+                                        {/*        }*/}
+                                        {/*    </Input>*/}
+                                        {/*</td>*/}
                                         <td>
-                                            <Input
-                                                type="select"
-                                                name="backdrop"
-                                                id="backdrop"
-                                                onChange={()=>{this.changeBackdrop(admin.idAdminGroup, event)}}
-                                            >
-                                                <option value="">Seleccionar Grupo</option>
-                                                {
-                                                    selector.map((group)=> (
-                                                        <option key={group.idGroup} value={group.idGroup}>
-                                                            {group.nameGroup}
-                                                        </option>
-                                                    ))
-                                                }
-                                            </Input>
-                                        </td>
-                                        <td>
-                                            <button className='btn btn-primary' onClick={()=>{this.saveAdmin()}}> <FontAwesomeIcon icon={faSave}/> </button>
+                                            <button className='btn btn-primary' onClick={()=>{this.saveAdmin(admin.idAdminGroup)}}> <FontAwesomeIcon icon={faSave}/> </button>
                                             {' '}
                                             <button className='btn btn-danger'
                                                     onClick={()=>{
@@ -210,12 +209,14 @@ class Requests extends React.Component{
         })
     }
 
-    saveAdmin(){
-        const {selectValue, idAdminGroup} = this.state
+    saveAdmin(idAdminGroup){
+        const {selectValue} = this.state
         let group = {
             idGroup: selectValue,
-            idAdmin: idAdminGroup
+            idAdmin: idAdminGroup,
+            accepted: 1
         }
+        console.log(group)
         invokeBackend.posInvocation(`/users/updateAdmin`, group, data => {
             alert(data.message)
             this.getRequests()
