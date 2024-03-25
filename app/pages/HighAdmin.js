@@ -82,6 +82,7 @@ class HighAdmin extends React.Component {
     sendAdmin(){
         const {country, province, municipality, city, cologne, admin, phoneAdmin, emailAdmin, postalCode, password, superAdmin} = this.state
         let roles = ''
+        let accepted = 0
 
         //Comprobando si ya existe un SeperAdministrador
         if (superAdmin !== 0){
@@ -92,7 +93,7 @@ class HighAdmin extends React.Component {
         if (!country || !province || !municipality || !city || !cologne || !admin || !phoneAdmin || !emailAdmin || !postalCode || !password){
             return
         }
-        const dataAdmin = [{country, province, municipality, city, cologne, admin, phoneAdmin, emailAdmin, postalCode, password, roles}]
+        const dataAdmin = [{country, province, municipality, city, cologne, admin, phoneAdmin, emailAdmin, postalCode, password, roles, accepted}]
         InvokeBackend.posInvocation(`/users/newAdmin`, dataAdmin, data => {
             alert(data.message)
             this.props.history.push('/Login')
@@ -211,7 +212,7 @@ class HighAdmin extends React.Component {
                                             <input type="text" className="form-control" id="validationDefault08" name='password' value={password} onChange={this.handleChange.bind(this)} required/>
                                         </div>
                                         <div className="col-12 text-center">
-                                            <button className='btn btn-primary' onClick={()=>{this.sendAdmin()}}> enviar datos</button>
+                                            <button className='btn btn-primary' onClick={()=>{this.sendAdmin()}}> Enviar datos</button>
                                         </div>
                                     </form>
                                     <br/>

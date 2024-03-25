@@ -2,9 +2,7 @@ import React from "react";
 import "../assets/stylesheets/cardHome.css";
 import alarma from "../assets/img/alarma.png";
 import activate from "../assets/img/activate.png";
-import {decryptData} from "../utils/encriptData";
 import Socket from "./Socket";
-import {secretKey} from "../../configServer";
 import InvokeBackend from "../utils/invokeBackend";
 import {Modal, ModalBody, ModalHeader} from "reactstrap";
 
@@ -14,7 +12,7 @@ class card extends React.Component{
         super(props);
 
         this.state = {
-            location: null,
+            location: '',
             error: null,
             dateTimeCurrent: new Date(),
             dataUser: [],
@@ -22,24 +20,27 @@ class card extends React.Component{
             messageModal: '',
         }
     }
+
     async componentDidMount() {
 
         await this.getDataUser()
         // Verificar si el navegador soporta la geolocalización
-        if (navigator.geolocation) {
-            // Obtener la ubicación actual
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { latitude, longitude } = position.coords;
-                    this.setState({ location: { latitude, longitude } });
-                },
-                (error) => {
-                    alert("Error obteniendo la ubicación: "+ error.message);
-                }
-            );
-        } else {
-            alert("La geolocalización no está soportada por este navegador.");
-        }
+        // if (navigator.geolocation) {
+        //     // Obtener la ubicación actual
+        //     navigator.geolocation.getCurrentPosition(
+        //         (position) => {
+        //             const { latitude, longitude } = position.coords;
+        //             this.setState({ location: { latitude, longitude } });
+        //             console.log(position.coords)
+        //         },
+        //         (error) => {
+        //             alert("Error obteniendo la ubicación: "+ error.message);
+        //         }
+        //     );
+        // } else {
+        //     alert("La geolocalización no está soportada por este navegador.");
+        // }
+        await this.getLocation()
 
         this.intervalID = setInterval(
             () => this.updateDateTime(),
@@ -52,12 +53,11 @@ class card extends React.Component{
 
     }
 
-    getubication(){
-        navigator.geolocation.getCurrentPosition(
+    async getLocation(){
+        await navigator.geolocation.getCurrentPosition(
             (position) => {
                 const { latitude, longitude } = position.coords;
                 this.setState({ location: { latitude, longitude } });
-                console.log(this.state.location)
             },
             (error) => {
                 alert("Error obteniendo la ubicación: "+ error.message);
@@ -65,6 +65,7 @@ class card extends React.Component{
         );
 
     }
+
     componentWillUnmount() {
         //Limpiar el intervalo cuando el componente se desmonta
         clearInterval(this.intervalID)
@@ -120,8 +121,8 @@ class card extends React.Component{
         })
     }
 
-    async activeAlarm(){
-        const {name, phone, nameGroup, id} = this.state.dataUser
+    activeAlarm(){
+        const {name, phone, nameGroup, idAdminGroup, idUser} = this.state.dataUser
         const {dateTimeCurrent} = this.state;
         const dateFormatted = this.formatDate(dateTimeCurrent);
         const hourFormatted =  this.formatHour(dateTimeCurrent)
@@ -130,15 +131,14 @@ class card extends React.Component{
             name: name,
             nameGroup: nameGroup,
             phone:phone ,
-            idGroup: id,
+            idAdminGroup: idAdminGroup,
             dateActivate: dateFormatted,
             hourActivate: hourFormatted,
+            idUser: idUser
         }
 
-        console.log(information)
-
         InvokeBackend.activeAlarm(`/alarm/activate`, information, data => {
-            this.sendCoordinate(dateFormatted, hourFormatted, name, data.group)
+            this.sendCoordinate(dateFormatted, hourFormatted, name, nameGroup)
             this.setState({
                 messageModal: data.message
             })
@@ -151,10 +151,9 @@ class card extends React.Component{
 
     deactivateAlarm(){
         let information = {
-            idGroup: this.state.dataUser.idGroup,
+            idAdminGroup: this.state.dataUser.idAdminGroup,
         }
         InvokeBackend.activeAlarm(`/alarm/deactivate`, information, data => {
-            console.log(data)
             this.setState({
                 messageModal: data.message
             })

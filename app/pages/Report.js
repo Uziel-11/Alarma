@@ -153,7 +153,7 @@ class Report extends Component {
                                    {/*        </FormGroup>*/}
                                    {/*    </Form>*/}
                                    {/*</td>*/}
-                                   <td>
+                                   <td style={{textAlign: 'right'}}>
                                        <button className='btn btn-primary' onClick={()=>{this.getInformation(item); this.toggleUpdate()}}> <FontAwesomeIcon icon={faEdit}/>Editar</button>
                                        {"  "}
                                        <button className='btn btn-danger' onClick={()=>{this.getInformation(item); this.toggleDelete()}}> <FontAwesomeIcon icon={faTrashAlt}/>Eliminar </button>

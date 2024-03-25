@@ -54,7 +54,7 @@ class AddUser extends React.Component{
         })
     }
 
-    handleChange(e){
+    handleChange = (e) => {
         this.setState({[e.target.name]: e.target.value})
     }
 
@@ -71,7 +71,12 @@ class AddUser extends React.Component{
     sendData(){
         const {password, phone, name, alias, idAdmin, idGroup} = this.state
         if (!password || !phone || !name || !alias){
+            alert('Llene todos los campos')
             return
+        }
+        if (!idAdmin){
+            alert('No olvide asignarle un Administrador')
+            return;
         }
         let user = {
             name: name,
@@ -101,50 +106,43 @@ class AddUser extends React.Component{
                             <div className='card'>
                                 <div className='card-header text-center'> <h4> Agregar Usuario </h4> </div>
                                 <div className='card-body'>
-                                    <form className='row justify-content-center' onSubmit={this.handleChange.bind(this)}>
-                                        <div className='form-group'>
-                                            <label htmlFor='name' className='form-label'> Nombre Completo </label>
-                                            <input type='text'
-                                                   id='name'
-                                                   className='form-control'
-                                                   name='name'
-                                                   value={name}
-                                                   onChange={this.handleChange.bind(this)}
-                                                   required
-                                            />
+                                    <form className='row g-1'>
+                                        <div className="col-md-12">
+                                            <label htmlFor="name" className="form-label">Nombre</label>
+                                            <input type="name" className="form-control" id="name" onChange={this.handleChange}
+                                                   value={name} name='name' required/>
                                         </div>
-                                        <br/>
                                         <div className='form-group'>
                                             <label className='form-label' htmlFor='alias'> Alias </label>
-                                            <input type='text'
+                                            <input type='alias'
                                                    id='alias'
                                                    className='form-control'
                                                    name='alias'
                                                    value={alias}
-                                                   onChange={this.handleChange.bind(this)}
+                                                   onChange={this.handleChange}
                                                    required
                                             />
                                         </div>
                                         <br/>
                                         <div className='form-group'>
                                             <label className='form-label' htmlFor='phone'> Telefono </label>
-                                            <input type='text'
+                                            <input type='phone'
                                                    id='phone'
                                                    className='form-control'
                                                    name='phone'
                                                    value={phone}
-                                                   onChange={this.handleChange.bind(this)}
+                                                   onChange={this.handleChange}
                                                    required
                                             />
                                         </div>
                                         <div className='form-group'>
                                             <label className='form-label' htmlFor='password'> Contraseña </label>
-                                            <input type='text'
+                                            <input type='password'
                                                    id='password'
                                                    className='form-control'
                                                    name='password'
                                                    value={password}
-                                                   onChange={this.handleChange.bind(this)}
+                                                   onChange={this.handleChange}
                                                    required
                                             />
                                         </div>
@@ -168,8 +166,9 @@ class AddUser extends React.Component{
                                             </div>
                                         }
                                         <br/>
+                                        <h6>Si desea agregar un Usuario a su cargo, no seleccione a ningun administrador</h6>
                                         <div className="col-12 text-center">
-                                            <button className="btn btn-primary col-6 mx-auto" style={{margin:"4%",padding:"2%"}} onClick={()=>{this.sendData()}} type="submit">Agregar Usuario</button>
+                                            <button className="btn btn-primary col-6 mx-auto" type='button' style={{margin:"4%",padding:"2%"}} onClick={()=>{this.sendData()}}>Agregar Usuario</button>
                                         </div>
                                     </form>
                                 </div>

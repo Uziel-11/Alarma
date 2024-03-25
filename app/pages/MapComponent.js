@@ -8,7 +8,6 @@ import { fromLonLat } from 'ol/proj';
 import Socket from "../components/Socket";
 import markerIcon from '../assets/img/markin.png'
 import Header from "../components/Header";
-import Report from "./Report";
 
 class MapComponent extends Component {
     constructor(props) {
@@ -79,15 +78,7 @@ class MapComponent extends Component {
                 <br/>
                 <div className="container-fluid">
                     <div className="row">
-                        <div id="map" style={{ width: '100%', height: '462.5px', marginBottom: '20px' }}></div>
-                        {/*<div className="col-md-6 order-md-1 order-1">*/}
-                        {/*    */}
-                        {/*</div>*/}
-                        {/*<div className="col-md-6 order-md-2 order-2">*/}
-                        {/*    <div style={{marginRight: '5%'}}>*/}
-                        {/*        <Report/>*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
+                        <div id="map" style={{ width: '100%', height: '559px', marginBottom: '20px' }}></div>
                     </div>
                 </div>
 

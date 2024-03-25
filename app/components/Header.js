@@ -82,7 +82,7 @@ class Header extends React.Component {
                                     </li>
                                     <li className="nav-item" >
 
-                                        <NavLink activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black", textDecoration: 'none'}} to="/Usuarios">USUARIOS</NavLink>
+                                        <NavLink activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black", textDecoration: 'none'}} to="/Usuarios">USUARIO</NavLink>
                                     </li>
                                 </React.Fragment>
                             }
@@ -94,7 +94,7 @@ class Header extends React.Component {
                                         <NavLink activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black",textDecoration: 'none'}} to="/Solicitudes">SOLICITUDES</NavLink>
                                     </li>
                                     <li className="nav-item" >
-                                        <NavLink activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black", textDecoration: 'none'}} to="/Administradores">ADMINISTRADORES</NavLink>
+                                        <NavLink activeStyle={{fontWeight:"bold",color:"#A50000"}} style={{marginLeft:"15px",color:"black", textDecoration: 'none'}} to="/Administradores">ADMINISTRADOR</NavLink>
                                     </li>
                                     <li className="nav-item" >
 

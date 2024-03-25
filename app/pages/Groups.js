@@ -33,7 +33,6 @@ class Groups extends React.Component{
         this.getGroups()
     }
 
-
     changeBackdrop = (event) => {
         const idGroup = event.target.value;
         const idAdminGroup = event.target.options[event.target.selectedIndex].getAttribute('idadmingroup');
@@ -132,7 +131,12 @@ class Groups extends React.Component{
     };
 
     toggleUpdate () {
-        this.setState({updateModal: !this.state.updateModal})
+        this.setState(
+            {
+                updateModal: !this.state.updateModal,
+                admin: ''
+            }
+        )
     }
 
     toggleDelete(){
@@ -304,7 +308,7 @@ class Groups extends React.Component{
                                     form.nameGroup?this.setState({deleteGroup: !this.state.deleteGroup}):null
                                 }}>Eliminar Grupo</button>
                         }
-                        <button className='btn btn-secondary' onClick={()=> {this.toggleDelete()}}> No </button>
+                        <button className='btn btn-primary' onClick={()=> {this.toggleDelete()}}> Cerrar </button>
                     </ModalFooter>
                 </Modal>
 
