@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import {Button, Input, Modal, ModalBody, ModalFooter, ModalHeader, Table} from "reactstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBan, faEdit, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+import invokeBackend from "../utils/invokeBackend";
 
 class Admins extends React.Component{
     constructor(props) {
@@ -16,12 +17,26 @@ class Admins extends React.Component{
             modalDeleteAdmin: false,
             idAdmin: '',
             message: '',
-            phone: ''
+            phone: '',
+            data: [],
+            group: false,
+            idGroup: ''
         }
     }
 
     componentDidMount() {
         this.getAdmins()
+        this.getGroups()
+    }
+
+    getGroups(){
+        invokeBackend.getInvocation('/group/getGroups', data => {
+            this.setState({
+                data: data.data
+            })
+        }, err => {
+            alert(err.message)
+        })
     }
 
     getAdmins(){
@@ -67,8 +82,24 @@ class Admins extends React.Component{
         })
     }
 
+    toggleGroup(){
+        this.setState({
+            group: !this.state.group
+        })
+    }
+
+    changeBackdrop = (event) => {
+        const idGroup = event.target.value;
+        const idAdminGroup = event.target.options[event.target.selectedIndex].getAttribute('idadmingroup');
+
+        this.setState({
+            idGroup: idGroup,
+            idAdmin: idAdminGroup
+        })
+    };
+
     render() {
-        const {admins, modalUsers, nameAdmin, users, modalDeleteAdmin, idAdmin, message} = this.state
+        const {admins, modalUsers, nameAdmin, users, modalDeleteAdmin, idAdmin, message, data, group} = this.state
         return(
             <div>
                 <Header/>
@@ -107,7 +138,10 @@ class Admins extends React.Component{
                                     <td>{admin.phoneAdmin}</td>
                                     <td>{admin.emailAdmin}</td>
                                     <td>{admin.postalCode}</td>
-                                    <td>{admin.nameGroup}</td>
+                                    <td>{admin.nameGroup? admin.nameGroup:
+                                            <button className='btn btn-primary' onClick={()=>{this.toggleGroup()}}>Grupo</button>
+                                        }
+                                    </td>
                                     <td>
                                         <button className='btn btn-primary'><FontAwesomeIcon icon={faBan}/></button>
                                         {' '}
@@ -181,6 +215,19 @@ class Admins extends React.Component{
                         <button className='btn btn-danger' onClick={()=>{this.deleteAdmin(), this.toggleModalDeleteAdmin()}}>Aceptar</button>
                         {' '}
                         <button className='btn btn-secondary' onClick={()=>{this.toggleModalDeleteAdmin()}}>Cerrar</button>
+                    </ModalFooter>
+                </Modal>
+
+                <Modal isOpen={group}>
+                    <ModalHeader>
+                        Asignar Grupo
+                    </ModalHeader>
+                    <ModalBody>
+                        Se le recomienda ir al apartado de "Grupos",
+                        Crear un nuevo grupo y seleccionar este administrador.
+                    </ModalBody>
+                    <ModalFooter>
+                        <button className='btn btn-secondary' onClick={()=> {this.toggleGroup()}}> Cerrar </button>
                     </ModalFooter>
                 </Modal>
             </div>

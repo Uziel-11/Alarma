@@ -127,6 +127,11 @@ class card extends React.Component{
         const dateFormatted = this.formatDate(dateTimeCurrent);
         const hourFormatted =  this.formatHour(dateTimeCurrent)
 
+        if (!name || !phone || !nameGroup || !idAdminGroup || !idUser){
+            alert('No es posible activar la alarma, ya que el administrador no a sido asignado a ningun Grupo')
+            return
+        }
+
         let information = {
             name: name,
             nameGroup: nameGroup,
@@ -146,7 +151,7 @@ class card extends React.Component{
         },
             error => {
             alert(error.message)
-            })
+        })
     }
 
     deactivateAlarm(){

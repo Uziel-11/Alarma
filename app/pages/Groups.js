@@ -29,6 +29,7 @@ class Groups extends React.Component{
             deleteGroup: false,
         }
     }
+
     componentDidMount() {
         this.getGroups()
     }

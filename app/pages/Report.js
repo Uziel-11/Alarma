@@ -131,6 +131,7 @@ class Report extends Component {
                            <th className='text-center'>Motivo</th>
                            <th className='text-center'>Accion Tomada</th>
                            <th></th>
+                           <th></th>
                        </tr>
                        </thead>
                        <tbody>
@@ -141,7 +142,7 @@ class Report extends Component {
                                    <td> {item.time} </td>
                                    <td> {item.date} </td>
                                    <td> {item.name} </td>
-                                   <td> {item.nameGroup} </td>
+                                   <td> {item.nameGroup?item.nameGroup:'El grupo no existe'} </td>
                                    <td> {item.phone} </td>
                                    <td> <button type='button' className='btn' onClick={()=>{this.getInformation(item); this.toggleModal('reason')}}> {!item.reason ? item.reason : item.reason.split(' ').slice(0, 5).join(' ')} </button> </td>
                                    <td> <button type='button' className='btn' onClick={()=>{this.getInformation(item); this.toggleModal('actionTaken')}}> {!item.actionTaken ? item.actionTaken : item.actionTaken.split(' ').slice(0, 5).join(' ')} </button> </td>
