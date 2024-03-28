@@ -195,9 +195,8 @@ class Requests extends React.Component{
 
     async sendMessage(){
         const {message, idAdminGroup, phone} = this.state
-        console.log(message, idAdminGroup)
 
-        await invokeBackend.deleteInvocation(`/users/deleteAdmin/${idAdminGroup}/${message}/${phone}`, data => {
+        await invokeBackend.deleteInvocation(`/users/deleteAdmin/${idAdminGroup}/${message}/${phone}/${0}`, data => {
             this.setState({
                 message: data.message,
                 status: data.status

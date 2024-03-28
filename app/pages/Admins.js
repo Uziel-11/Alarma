@@ -62,8 +62,9 @@ class Admins extends React.Component{
 
     deleteAdmin(){
         const {idAdmin, message, phone} = this.state
-        InvokeBackend.deleteInvocation(`/users/deleteAdmin/${idAdmin}/${message}/${phone}`, data => {
+        InvokeBackend.deleteInvocation(`/users/deleteAdmin/${idAdmin}/${message}/${phone}/${1}`, data => {
             console.log(data.message)
+            this.setState({message: ''})
             this.getAdmins()
         }, err => {
             console.log(err.message)
